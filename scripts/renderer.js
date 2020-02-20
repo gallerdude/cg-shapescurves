@@ -81,11 +81,14 @@ class Renderer {
     // color:        array of int [R, G, B, A]
     // framebuffer:  canvas ctx image data
     drawRectangle(left_bottom, right_top, color, framebuffer) {
-        console.log("this.drawRectangle")
         this.drawLine(left_bottom.x, left_bottom.y, right_top.x, left_bottom.y, color, framebuffer);
         this.drawLine(left_bottom.x, left_bottom.y, left_bottom.x, right_top.y, color, framebuffer);
         this.drawLine(left_bottom.x, right_top.y, right_top.x, right_top.y, color, framebuffer);
         this.drawLine(right_top.x, right_top.y, right_top.x, left_bottom.y, color, framebuffer);
+    }
+
+    drawPoint(center, framebuffer) {
+        this.drawRectangle({x: center.x - 5, y: center.y - 5}, {x: center.x + 5, y: center.y + 5}, [128, 128, 128, 255], framebuffer);
     }
 
     // center:       object ({x: __, y: __})
@@ -93,6 +96,7 @@ class Renderer {
     // color:        array of int [R, G, B, A]
     // framebuffer:  canvas ctx image data
     drawCircle(center, radius, color, framebuffer) {
+        console.log(this.show_points)
         console.log(this.num_curve_sections);
         let points = [];
         for (let i = 0; i < this.num_curve_sections; i++) {
@@ -102,6 +106,7 @@ class Renderer {
         }
         for (let i = 0; i < points.length-1; i++) {
             this.drawLine(points[i][0], points[i][1], points[(i+1) % points.length][0], points[(i+1) % points.length][1], color, framebuffer);
+            if (this.show_points) this.drawPoint({x: points[i][0], y: points[i][1]}, framebuffer);
         }
     }
 
@@ -121,6 +126,7 @@ class Renderer {
             for (let i = 0; i < points.length-1; i++) {
                 console.log(points[0][0], points[i][1], points[(i+1) % points.length][0], points[(i+1) % points.length][1])
                 this.drawLine(points[i][0], points[i][1], points[(i+1) % points.length][0], points[(i+1) % points.length][1], color, framebuffer);
+                if (this.show_points) this.drawPoint({x: points[i][0], y: points[i][1]}, framebuffer);
             }
         }
     }
